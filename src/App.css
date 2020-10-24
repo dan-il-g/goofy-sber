@@ -9,9 +9,8 @@
 }
 .main-map{
   position: absolute;
-  height: 100vh;
+  height: 100%;
   width: 100%;
-  outline: 1px solid red;
   padding: 0;
   margin: 0;
 }
@@ -30,13 +29,52 @@
   color: #61dafb;
 }
 
-.my-location{
-  width: 36px;
-  height: 36px;
-  background-color: black;
-  border-radius: 50%;
+.btn-my-location, .my-location-2{
+  width: 40px;
+  height: 40px;
   cursor: pointer;
-  right:16px;
+  right:8px;
   bottom: 8%;
   position: absolute;
+}
+
+.my-location-2{
+  background-color: red;
+  bottom: 40%;
+}
+.search{
+  position: absolute;
+  top: 5px;
+  width: 400px;
+}
+.btn-my-location{
+
+}
+
+/*MAPS*/
+.dg-zoom.leaflet-control{
+  display: none;
+}
+.leaflet-top.leaflet-right{
+  display: none;
+}
+.zoom-top-bar{
+  position: absolute;
+  top:50%;
+  right: 8px;
+  transform: translate(0, -50%);
+}
+.zoom-top-bar-btn{
+  width: 40px;
+  height: 40px;
+  box-sizing: border-box;
+  cursor: pointer;
+  position: relative;
+}
+.zoom-top-bar-up{
+  margin-bottom: 8px;
+}
+.zoom-top-bar-btn img, .to-image-btn img{
+  width: inherit;
+  height: inherit;
 }

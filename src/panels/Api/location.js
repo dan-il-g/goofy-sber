@@ -1,13 +1,14 @@
 import publicIp from 'public-ip';
+import DG from '2gis-maps'
+import GetIcon from "./brands";
 
 async function getIp(){
     return publicIp.v4();
 }
 
 async function getLocation_by_ip(ip){
-    const url = "http://api.ipstack.com/";
-    const token = "?access_key=00e9145d568b06b0c9caea2cc01c5b66";
-    let response = await fetch(url + ip + token);
+    const url = "https://eugene.gubanov.site/r.php?ip=";
+    let response = await fetch(url + ip);
     let resp = await response.json();
     return {
         "lat": parseFloat(resp["latitude"]),
@@ -41,12 +42,10 @@ function geoFindMe(hook) {
     if(!navigator.geolocation) {
         alert("Поддержки нет!");
     } else {
-        let r = navigator.geolocation.getCurrentPosition(success, error);
-        console.log("r:", r);
+        navigator.geolocation.getCurrentPosition(success, error);
     }
-    console.log([a, b]);
-    return [a, b]
 }
+
 function viewPoint(dg_map, lat=null, lng=null, zoom=null){
     if ((lat === null) && (lng === null)){
 
@@ -63,11 +62,86 @@ function viewPoint(dg_map, lat=null, lng=null, zoom=null){
     }
 }
 
+function setResetMyLocation(dg_map, lat, lng){
+    let markers = DG.featureGroup();
+    function getScreenLocation(){
+        const url = process.env.PUBLIC_URL;
+        let myIcon = DG.icon({
+            iconUrl: url + "/logos/self_locate.png",
+            iconRetinaUrl: url + "/logos/self_locate.png",
+            iconSize: [28, 28],
+            iconAnchor: [28, 28]
+        });
+        return myIcon;
+    }
+
+    DG.marker(
+        [lat, lng],
+        {icon: getScreenLocation()}
+    ).addTo(
+        markers
+    );
+    function showMarkers() {
+        markers.addTo(
+            dg_map
+        );
+        dg_map.fitBounds(
+            markers.getBounds()
+        );
+    }
+
+    function hideMarkers() {
+        markers.removeFrom(
+            dg_map
+        );
+    }
+    return [showMarkers, hideMarkers];
+}
+
+function addMarkers(dg_map, coordinates_array, category){
+    let markers = DG.featureGroup()
+    for (let i = 0; i < coordinates_array.length; i++) {
+        let coordinates = coordinates_array[i];
+        try{
+            DG.marker(
+                [coordinates.point.lat, coordinates.point.lon],
+                {icon: GetIcon(
+                        category,
+                        coordinates.name,
+                    )}
+            ).addTo(
+                markers
+            );
+        } catch (e) {
+            console.log(coordinates.point);
+            console.log("O", i, e);
+        }
+    }
+
+    function showMarkers() {
+        markers.addTo(
+            dg_map
+        );
+        dg_map.fitBounds(
+            markers.getBounds()
+        );
+    }
+
+    function hideMarkers() {
+        markers.removeFrom(
+            dg_map
+        );
+    }
+    return [showMarkers, hideMarkers];
+}
+
 const Apiloc = {
     getIp,
     getLocation_by_ip,
     ApiSetLocation,
     geoFindMe,
-    viewPoint
+    viewPoint,
+    addMarkers,
+    setResetMyLocation
 }
 export default Apiloc;

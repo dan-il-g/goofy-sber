@@ -1,7 +1,39 @@
 import React from 'react';
-const Share = (hook) => {
+
+const url = process.env.PUBLIC_URL;
+const Zoom = ({maps}) => {
+    return(
+        <div onClick={() => {
+            maps.zoomIn();
+        }} className="zoom-top-bar-up zoom-top-bar-btn">
+            <img src={url + "/logos/plus.svg"} alt="PlusZoom"/>
+        </div>
+        )
+
+}
+const Zoom2 = ({maps}) => {
+    return(
+        <div onClick={() => {
+            maps.zoomOut();
+        }} className="zoom-top-bar-down zoom-top-bar-btn">
+            <img src={url + "/logos/minus.svg"} alt="MinusZoom"/>
+        </div>
+    )
+}
+
+export const ZoomPanel = ({maps}) => {
     return (
-        <div onClick={hook} className="my-location"/>
+        <div className="zoom-top-bar">
+            <Zoom maps={maps}/>
+            <Zoom2 maps={maps}/>
+        </div>
     );
 }
-export default Share;
+export const MyLocation = ({handler}) => {
+    return (
+        <div onClick={handler} className="to-image-btn btn-my-location">
+            <img src={url + "/logos/find.svg"} alt="MyLocation"/>
+        </div>
+    )
+}
+export default ZoomPanel;
