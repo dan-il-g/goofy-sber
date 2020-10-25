@@ -11,14 +11,20 @@ function limitStr(str, n, symb='...') {
 }
 
 let CategoryShops = [
-    ["Аптека.png", "Аптека", "Реклама, если есть"],
-    ["Аптека.png", "Мусор"],
-    ["Аптека.png", "Хлеб"],
-    ["Аптека.png", "Аптека", "Реклама, если есть"],
+    ["shop.svg", "Продукты"],
+    ["shoes.svg", "Обувь"],
+    ["macdonalds.svg", "Макдональдс", "Реклама"],
+    ["shirt.svg", "Одежда"],
+    ["sport.svg", "Спорт товары"],
+    ["home.svg", "Товара для дома"],
+    ["hammer.svg", "Строительные"],
+    ["sber.svg", "Заказать продукты на дом", "Реклама", "https://sbermarket.ru/"],
+    ["apteka.svg", "Аптеки"],
+    ["eat.svg", "Кафе"],
 ]
 
 const CategotyListItem = ({row, hook}) => {
-    const url = process.env.PUBLIC_URL + "/logos/";
+    const url = process.env.PUBLIC_URL + "/logos/category/";
     let ads = ""
     if (row[2] !== undefined){
         ads = (
@@ -27,7 +33,11 @@ const CategotyListItem = ({row, hook}) => {
     }
     return (
         <div onClick={() => {
-            hook(row[1].toLowerCase());
+            if (row[3] !== undefined){
+                window.open(row[3]);
+            } else {
+                hook(row[1].toLowerCase())
+            }
         }} className="category-list_item">
             <div>
                 <img src={url + row[0]}></img>
