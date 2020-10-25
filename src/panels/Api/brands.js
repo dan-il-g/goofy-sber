@@ -2,12 +2,36 @@ import DG from "2gis-maps";
 
 const Category =  {
     "аптека": "apteka.png",
-    "магазин": "shop.png"
+    "обувь": "shoes.png",
+    "одежда": "shirt.png",
+    "для спорта": "sport.png",
+    "для дома": "home.png",
+    "строительные": "hammer.png",
+    "кафе": "kafe.png",
+    "парикмахерская": "cut.png",
+    "продукты": "shop.png"
 };
 
 const Brand = {
     "пятерочка": "5.png",
-    "монетка": "monetka.png"
+    "кировский": "kirovsky.png",
+    "монетка": "monetka.png",
+    "макдоналдс": "macdonalds.png",
+    "kfc": "kfc.png",
+    "спортмастер": "sportmaster.png",
+    "nike": "nike.png",
+    "newbalance": "nb.png",
+    "new-balance": "nb.png",
+    "галамарт": "gala.png",
+    "dodo": "dodo.png",
+    "вилкаложка": "vilka.png",
+    "вилка ложка": "vilka.png",
+    "живика": "zhivika.png",
+    "кузьма": "kuzma.png",
+    "hm": "hm.png",
+    "икеа": "ikea.png",
+    "ikea": "ikea.png",
+    "леруа": "lerua.png"
 };
 
 function GetName(name){
@@ -38,8 +62,8 @@ function GetIcon(category, name){
     let myIcon = DG.icon({
         iconUrl: url,
         iconRetinaUrl: url,
-        iconSize: [18, 18],
-        iconAnchor: [20, 20]
+        iconSize: [22, 22],
+        iconAnchor: [22, 22]
     });
     return myIcon
 }

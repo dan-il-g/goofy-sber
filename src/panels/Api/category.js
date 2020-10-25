@@ -21,7 +21,7 @@ function distanceToString(a){
         return "";
     }
     if (a < 1000){
-        return ((a / 100).toFixed(1) * 100) + " м."
+        return Math.round((a / 100).toFixed(1) * 100) + " м."
     }
     return (a / 1000).toFixed(2) + " км."
 }

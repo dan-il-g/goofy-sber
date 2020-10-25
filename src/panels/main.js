@@ -8,6 +8,7 @@ import Apiloc from './Api/location.js';
 import Share from "./btns";
 import Gis from "./Api/category";
 import {ZoomPanel, MyLocation} from "./btns";
+import {ViewPanel} from "./view";
 
 function empty(){}
 
@@ -33,20 +34,23 @@ function Home() {
         }
         Apiloc.geoFindMe(r);
     }
+    async function startQuery(query){
+        let data = await handlerLocation2(query);
+        return data
+    }
     async function handlerLocation2(q="Аптека"){
         let search = await Gis.get_by_category(q, location);
         if ((search.result !== undefined) && (search.result.items !== undefined)){
             try{
-                console.log("search", search.result.items);
                 let new_state = Apiloc.addMarkers(dg_map, search.result.items, q);
-                console.log(new_state);
                 clearPoints[1]();
                 setClearPoints(new_state);
                 new_state[0]();
+                return search.result.items
             } catch (e) {
                 console.log(e);
             }
-
+            return []
         }
     }
 
@@ -73,13 +77,9 @@ function Home() {
     return (
         <div className="main-map">
             <div id="map"/>
-            <div onClick={handlerLocation2} className="my-location-2"/>
-            <input onChange={(e) => {
-                let q = e.target.value;
-                handlerLocation2(q);
-            }} className="search out"/>
             <ZoomPanel maps={dg_map}/>
             <MyLocation handler={handlerLocation}/>
+            <ViewPanel hook={startQuery}/>
         </div>
     );
 }
