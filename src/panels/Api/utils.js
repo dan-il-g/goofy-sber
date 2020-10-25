@@ -67,3 +67,22 @@ export const Stars = ({rating}) => {
         </div>
     )
 }
+
+export function Icons(icons){
+    const Icon = ({path, link}) => {
+        if ((link !== undefined) && (link !== null)){
+            return (
+                <div onClick={() => {
+                    window.open(link);
+                }} className="socials">
+                    <img className="socials__icon" src={process.env.PUBLIC_URL + "/logos/more/" + path} alt="MoreIcon"/>
+                </div>
+            )
+        }
+        return ("")
+    }
+    let vk = (<Icon path={"vk.svg"} link={icons.vkontakte}/>);
+    let inst = (<Icon path={"inst.svg"} link={icons.instagram}/>);
+    let phone = (<Icon path={"phone.svg"} link={"tel:"+icons.phone}/>);
+    return [vk, inst, phone]
+}

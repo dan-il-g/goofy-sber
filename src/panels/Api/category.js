@@ -37,6 +37,7 @@ async function get_by_category(category, location, to_center=false, radius=2000,
         "items.reviews",
         "items.schedule",
         "items.contact_groups",
+        "items.rubrics",
     ])
     base.searchParams.set("q", category);
     base.searchParams.set("sort_point", location[1] + "," + location[0])
@@ -66,8 +67,40 @@ async function get_by_category(category, location, to_center=false, radius=2000,
             return object
         }
     }
+    function contacts(object){
+        let allow_types = {
+            phone: null,
+            instagram: null,
+            vkontakte: null,
+        }
+        object.contact_groups.forEach(elem => {
+            elem.contacts.forEach(item => {
+                if (allow_types[item.type] !== undefined){
+                    allow_types[item.type] = item.value;
+                }
+            })
+        })
+        object.contact_groups = allow_types
+        return object
+    }
+    function delivery(object){
+        object.delivery = false
+        object.rubrics.forEach((elem) => {
+            if (elem.name !== undefined){
+                let name = elem.name.toLowerCase()
+                const s = "гипермаркетысупермаркетыпродуктымагазингипермаркетпродуктсупермаркетпятёрочкапятерочка";
+                console.log(name);
+                if (-1 !== s.indexOf(name)){
+                    object.delivery = true;
+                }
+            }
+        })
+        return object
+    }
     try{
         resp.result.items = resp.result.items.map(add_distance);
+        resp.result.items = resp.result.items.map(contacts);
+        resp.result.items = resp.result.items.map(delivery);
     } catch (e) {}
     return resp
 }

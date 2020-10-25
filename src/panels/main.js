@@ -34,6 +34,11 @@ function Home() {
         }
         Apiloc.geoFindMe(r);
     }
+    function focusPoint(item){
+        let lat = item.point.lat
+        let lon = item.point.lon
+        Apiloc.viewPoint(dg_map, lat, lon, 16);
+    }
     async function startQuery(query){
         let data = await handlerLocation2(query);
         return data
@@ -68,8 +73,6 @@ function Home() {
             } catch (e){
                 console.log(e);
             }
-
-
         }
         get_location();
     }, [])
@@ -79,7 +82,7 @@ function Home() {
             <div id="map"/>
             <ZoomPanel maps={dg_map}/>
             <MyLocation handler={handlerLocation}/>
-            <ViewPanel clearAllPoint={[clearPoints[1]]} hook={startQuery}/>
+            <ViewPanel clearAllPoint={[clearPoints[1]]} hook={startQuery} focusPoint={focusPoint}/>
         </div>
     );
 }

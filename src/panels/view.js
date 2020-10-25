@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {getTimeByObject, Stars} from "./Api/utils";
+import {getTimeByObject, Icons, Stars} from "./Api/utils";
+import Apiloc from "./Api/location";
 
 function limitStr(str, n, symb='...') {
     if (str.length <= n){
@@ -22,6 +23,17 @@ let CategoryShops = [
     ["apteka.svg", "Аптеки"],
     ["eat.svg", "Кафе"],
 ]
+
+export function getCategoryIconInSearchByQuery(query){
+    let url = process.env.PUBLIC_URL + "/logos/category/";
+    let default_ = url + "default.svg";
+    CategoryShops.forEach((elem) => {
+        if (query == elem[1].toLowerCase()){
+            default_ = url + elem[0];
+        }
+    });
+    return default_
+}
 
 const CategotyListItem = ({row, hook}) => {
     const url = process.env.PUBLIC_URL + "/logos/category/";
@@ -56,7 +68,8 @@ export const CategoryList = ({hook}) => {
     )
 }
 
-const SearchListItem = ({row, hook}) => {
+const SearchListItem = ({row, hook, querySearch}) => {
+    console.log("querySearch:", querySearch);
     const url = process.env.PUBLIC_URL + "/logos/";
     let distance = "";
     if ((row.distance.text !== undefined) && (row.distance.text !== "")){
@@ -64,12 +77,13 @@ const SearchListItem = ({row, hook}) => {
             <p className="gray-color">{row.distance.text}</p>
         )
     }
+    let src_icon = getCategoryIconInSearchByQuery(querySearch);
     return (
         <div onClick={() => {
             hook(row);
         }} className="category-list_item">
             <div>
-                <img src={url + "close.svg"}></img>
+                <img src={src_icon}></img>
                 <div className="text">
                     <p>{limitStr(row.name, 27)}</p>
                     <p className="gray-color">{row.address_name}</p>
@@ -79,9 +93,9 @@ const SearchListItem = ({row, hook}) => {
         </div>
     )
 }
-export const SearchList = ({data, hook}) => {
+export const SearchList = ({data, hook, querySearch}) => {
     try{
-        let all = data.map((item, i) => {return <SearchListItem key={i} hook={hook} row={item}/>});
+        let all = data.map((item, i) => {return <SearchListItem querySearch={querySearch} key={i} hook={hook} row={item}/>});
         return (
             <div className="category-list">{all}</div>
         )
@@ -95,7 +109,7 @@ export const SearchList = ({data, hook}) => {
 
 }
 
-export const ViewPanel = ({hook, clearAllPoint}) => {
+export const ViewPanel = ({hook, clearAllPoint, focusPoint}) => {
     const url = process.env.PUBLIC_URL + "/logos/";
     const [classPopUp, setClassPopUp] = useState("popupClose");
     const [UserInput, setUserInput] = useState("");
@@ -163,7 +177,8 @@ export const ViewPanel = ({hook, clearAllPoint}) => {
         {
             ViewList = (
                 <div className="popup-container">
-                    <SearchList data={DataQuery} hook={(item) => {
+                    <SearchList querySearch={UserInput} data={DataQuery} hook={(item) => {
+                        focusPoint(item);
                         setMoreData(item);
                         setIsMoreItem(true);
                         setClassPopUpAll(false);
@@ -184,7 +199,8 @@ export const ViewPanel = ({hook, clearAllPoint}) => {
             schedule = getTimeByObject(MoreData.schedule)
             console.log(">>>", schedule);
         }
-
+        let icons = Icons(MoreData.contact_groups);
+        let delivery = MoreData.delivery ? "show" : "unshow";
         return (
             <div id="popup-trigger-one" className="popup p-full border-radius">
                 <div className="p-small">
@@ -207,13 +223,17 @@ export const ViewPanel = ({hook, clearAllPoint}) => {
                         {distance}
                     </div>
                     <div className="last-row">
-                        <div className="buy-button">
+                        <div onClick={() => {
+                            if (delivery == "show"){
+                                window.open("https://sbermarket.ru/");
+                            }
+                        }} className={"buy-button " + delivery}>
                             <a>Заказать доставку</a>
                             <img src={url + "sber.svg"}></img>
                         </div>
-                        <div className="socials">
-
-                        </div>
+                        {icons[0]}
+                        {icons[1]}
+                        {icons[2]}
                     </div>
                 </div>
 

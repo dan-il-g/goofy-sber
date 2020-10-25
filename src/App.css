@@ -114,6 +114,7 @@ h1{
   /*height: 30vh;*/
   bottom: -30vh;
   padding: 28px;
+  padding-top: 23px;
 }
 .p-small > .name-row{
   display: flex;
@@ -126,11 +127,18 @@ h1{
 .p-small .name-row p:nth-child(1){
   font-size: 18px;
 }
+.socials .socials__icon{
+  position: absolute;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 .p-small .name-row p:nth-child(2){
   font-size: 15px;
 }
 .p-small > .stars{
   margin-top: 1px!important;
+  margin-bottom: 0px !important;
 }
 .p-small .stars .star-item{
   display: inline-block;
@@ -151,6 +159,9 @@ h1{
   display: flex;
   justify-content: space-between;
 }
+.last-row .unshow{
+  opacity: 0;
+}
 .buy-button{
   background: #30BF54;
   width: 60%;
@@ -163,10 +174,11 @@ h1{
   padding: 0 8px;
 }
 .socials{
+  position: relative;
   height: 38px;
   width: 38px;
-  border-radius: 6px;
-  background: #282c34;
+  border-radius: 5px;
+  background: #EBEBEB;
 }
 
 @media (prefers-reduced-motion: no-preference) {
