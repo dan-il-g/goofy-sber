@@ -39,7 +39,7 @@ body{
   bottom: 0 !important;
 }
 .popupClose{
-  bottom: -92.3vh !important;
+  bottom: -91vh !important;
 }
 .popup-container{
   margin-top: -5px;
@@ -72,7 +72,7 @@ h1{
 .separating-line{
   width: 100%;
   height: 5px;
-  background: rgba(128, 128, 128, .3);
+  background: #f2f2f2;
   margin: 10px 0;
 }
 .p-full > .separating-line:nth-child(1){

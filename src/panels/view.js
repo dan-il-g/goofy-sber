@@ -1,6 +1,10 @@
 import React, {useEffect, useState} from 'react';
+import {getTimeByObject} from "./Api/utils";
 
 function limitStr(str, n, symb='...') {
+    if (str.length <= n){
+        return str
+    }
     if (!n && !symb) return str;
     symb = symb || '...';
     return str.substr(0, n - symb.length) + symb;
@@ -14,7 +18,6 @@ let CategoryShops = [
 ]
 
 const CategotyListItem = ({row, hook}) => {
-    console.log(row);
     const url = process.env.PUBLIC_URL + "/logos/";
     let ads = ""
     if (row[2] !== undefined){
@@ -44,7 +47,6 @@ export const CategoryList = ({hook}) => {
 }
 
 const SearchListItem = ({row, hook}) => {
-    console.log(row);
     const url = process.env.PUBLIC_URL + "/logos/";
     let distance = "";
     if ((row.distance.text !== undefined) && (row.distance.text !== "")){
@@ -54,7 +56,7 @@ const SearchListItem = ({row, hook}) => {
     }
     return (
         <div onClick={() => {
-            hook(row[1].toLowerCase());
+            hook(row);
         }} className="category-list_item">
             <div>
                 <img src={url + "close.svg"}></img>
@@ -69,7 +71,7 @@ const SearchListItem = ({row, hook}) => {
 }
 export const SearchList = ({data, hook}) => {
     try{
-        let all = data.map((item) => {return <SearchListItem hook={hook} row={item}/>});
+        let all = data.map((item, i) => {return <SearchListItem key={i} hook={hook} row={item}/>});
         return (
             <div className="category-list">{all}</div>
         )
@@ -83,13 +85,14 @@ export const SearchList = ({data, hook}) => {
 
 }
 
-export const ViewPanel = ({hook}) => {
+export const ViewPanel = ({hook, clearAllPoint}) => {
     const url = process.env.PUBLIC_URL + "/logos/";
     const [classPopUp, setClassPopUp] = useState("popupClose");
     const [UserInput, setUserInput] = useState("");
     const [classPopUpAll, setClassPopUpAll] = useState(true);
     const [DataQuery, setDataQuery] = useState([]);
     const [isMoreItem, setIsMoreItem] = useState(false);
+    const [MoreData, setMoreData] = useState(null);
     const openClass = "popupOpen";
     const closeClass = "popupClose";
     function Trigger(){
@@ -118,18 +121,23 @@ export const ViewPanel = ({hook}) => {
             }
         }
     }
+    function Clear(value){
+        let a = document.getElementById("you-input-search-box");
+        a.value = value;
+        clearAllPoint[0]();
+    }
 
     async function getDataByQuery(q){
         if (q === ""){
             setUserInput("");
             setClassPopUpAll(true);
             setDataQuery([]);
+            Clear("");
             // setIsMoreItem(false);
         } else {
             setUserInput(q);
             let data = await hook(q);
             setDataQuery(data);
-            console.log("search", data);
         }
 
     }
@@ -142,34 +150,86 @@ export const ViewPanel = ({hook}) => {
             </div>
         )
     } else {
-        if (isMoreItem){
-            //
-        } else {
+        {
             ViewList = (
                 <div className="popup-container">
-                    <SearchList data={DataQuery}/>
+                    <SearchList data={DataQuery} hook={(item) => {
+                        setMoreData(item);
+                        setIsMoreItem(true);
+                        setClassPopUpAll(false);
+                    }}/>
                 </div>
             )
         }
     }
-    return (
-        <div id="popup-trigger-one" className={"popup p-full border-radius " + classPopUp}>
-        <div onClick={Trigger} className="separating-line"></div>
-        <div className="popup-container">
-            <div className="search-box">
-                <img className='search-box_img' src={url + "search.svg"} alt="search"></img>
-                <input
-                    onClick={() => {PopupState("open")}}
-                    onChange={(e) => {
-                        let value = e.target.value;
-                        getDataByQuery(value);
-                    }}
-                    placeholder="Введите место или адрес"/>
-                <img className='search-box_img' src={url + "close.svg"} alt="close"></img>
+    if ((isMoreItem) && (MoreData !== null) && (MoreData !== undefined)){
+        console.log(MoreData);
+        let distance = "";
+        if ((MoreData.distance.text !== undefined) && (MoreData.distance.text !== "")){
+            distance = (<p>{MoreData.distance.text}</p>)
+        }
+
+        let schedule = "";
+        if (MoreData.schedule !== undefined){
+            schedule = getTimeByObject(MoreData.schedule)
+            console.log(">>>", schedule);
+        }
+
+        return (
+            <div id="popup-trigger-one" className="popup p-full border-radius">
+                <div className="p-small">
+                    <div className="name-row">
+                        <div className="text">
+                            <p>{MoreData.name}</p>
+                            <p className="gray-color">{MoreData.address_name}</p>
+                        </div>
+                        <img onClick={() => {
+                            setIsMoreItem(false);
+                            setMoreData(null);
+                            setClassPopUpAll(true);
+                        }} src={url + "close.svg"} alt="close"></img>
+                    </div>
+                    <div className="text gray-color">
+                        <p>{schedule}</p>
+                        {distance}
+                    </div>
+                    <div className="last-row">
+                        <div className="buy-button">
+                            <a>Заказать доставку</a>
+                            <img src={url + "sber.svg"}></img>
+                        </div>
+                        <div className="socials">
+
+                        </div>
+                    </div>
+                </div>
+
             </div>
-        </div>
-        <div className="separating-line"></div>
-            {ViewList}
-    </div>
-    )
+        )
+    } {
+        return (
+            <div id="popup-trigger-one" className={"popup p-full border-radius " + classPopUp}>
+                <div onClick={Trigger} className="separating-line"></div>
+                <div className="popup-container">
+                    <div className="search-box">
+                        <img className='search-box_img' src={url + "search.svg"} alt="search"></img>
+                        <input
+                            id="you-input-search-box"
+                            onClick={() => {PopupState("open")}}
+                            onChange={(e) => {
+                                let value = e.target.value;
+                                getDataByQuery(value);
+                            }}
+                            placeholder="Введите место или адрес"/>
+                        <img onClick={() => {
+                            getDataByQuery("");
+                        }} className='search-box_img' src={url + "close.svg"} alt="close"></img>
+                    </div>
+                </div>
+                <div className="separating-line"></div>
+                {ViewList}
+            </div>
+        )
+    }
+
 }

@@ -79,7 +79,7 @@ function Home() {
             <div id="map"/>
             <ZoomPanel maps={dg_map}/>
             <MyLocation handler={handlerLocation}/>
-            <ViewPanel hook={startQuery}/>
+            <ViewPanel clearAllPoint={[clearPoints[1]]} hook={startQuery}/>
         </div>
     );
 }
