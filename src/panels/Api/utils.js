@@ -1,3 +1,5 @@
+import React from "react";
+
 function getWeekDay() {
     let date = new Date();
     return r(date.getDay());
@@ -27,9 +29,41 @@ export function getTimeByObject(schedule){
         return ""
     }
     let a = getWeekDay();
-    let time_ = zzz(schedule[a].working_hours);
-    if (time_ !== ""){
-        return "Открыто до " + time_
+    if (schedule[a].working_hours !== undefined){
+        let time_ = zzz(schedule[a].working_hours);
+        if (time_ !== ""){
+            return "Открыто до " + time_
+        }
     }
     return ""
+
+}
+
+export const Stars = ({rating}) => {
+    console.log("rating:", rating);
+    const Star = ({isHide}) => {
+        const url = process.env.PUBLIC_URL;
+        let star = "star-fill.svg";
+        if (isHide){
+            star = "star.svg"
+        }
+        star = process.env.PUBLIC_URL + "/logos/" + star;
+        return (
+            <img className="star-item" src={star} alt={"star"}/>
+        )
+    }
+    let digit = Math.round(rating);
+    let items = []
+    for (let i = 1; i <= 5; i++){
+        items.push(digit <= 0);
+        digit -= 1;
+    }
+    console.log(items);
+    items = items.map((i) => {return <Star isHide={i}/>});
+    return (
+        <div className={"Stars"}>
+            {items}
+            <p className="star-item text">{rating.toFixed(1)}</p>
+        </div>
+    )
 }

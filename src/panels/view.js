@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {getTimeByObject} from "./Api/utils";
+import {getTimeByObject, Stars} from "./Api/utils";
 
 function limitStr(str, n, symb='...') {
     if (str.length <= n){
@@ -188,6 +188,9 @@ export const ViewPanel = ({hook, clearAllPoint}) => {
                             setMoreData(null);
                             setClassPopUpAll(true);
                         }} src={url + "close.svg"} alt="close"></img>
+                    </div>
+                    <div className="text gray-color stars">
+                        <Stars rating={MoreData.reviews.general_rating}/>
                     </div>
                     <div className="text gray-color">
                         <p>{schedule}</p>

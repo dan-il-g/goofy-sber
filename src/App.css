@@ -124,16 +124,28 @@ h1{
   height: 20px;
 }
 .p-small .name-row p:nth-child(1){
-  font-size: 16px;
+  font-size: 18px;
 }
 .p-small .name-row p:nth-child(2){
+  font-size: 15px;
+}
+.p-small > .stars{
+  margin-top: 1px!important;
+}
+.p-small .stars .star-item{
+  display: inline-block;
+  padding: 3px 2px;
+}
+.p-small .stars .text{
   font-size: 10px;
+  padding-left: 8px;
+  line-height: 12px;
 }
 .p-small >.text{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 15px 0;
+  margin: 8px 0;
 }
 .p-small .last-row{
   display: flex;
