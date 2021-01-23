@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/goofy-sber/static/css/main.db5ea622.chunk.css",
-    "main.js": "/goofy-sber/static/js/main.7b7613ad.chunk.js",
-    "main.js.map": "/goofy-sber/static/js/main.7b7613ad.chunk.js.map",
+    "main.js": "/goofy-sber/static/js/main.4e0b4e92.chunk.js",
+    "main.js.map": "/goofy-sber/static/js/main.4e0b4e92.chunk.js.map",
     "runtime-main.js": "/goofy-sber/static/js/runtime-main.75cd0da6.js",
     "runtime-main.js.map": "/goofy-sber/static/js/runtime-main.75cd0da6.js.map",
     "static/css/2.20aa2d7b.chunk.css": "/goofy-sber/static/css/2.20aa2d7b.chunk.css",
@@ -20,6 +20,6 @@
     "static/css/2.20aa2d7b.chunk.css",
     "static/js/2.27ad5c33.chunk.js",
     "static/css/main.db5ea622.chunk.css",
-    "static/js/main.7b7613ad.chunk.js"
+    "static/js/main.4e0b4e92.chunk.js"
   ]
 }
