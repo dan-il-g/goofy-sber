@@ -7,7 +7,7 @@ async function getIp(){
 }
 
 async function getLocation_by_ip(ip){
-    const url = "https://eugene.gubanov.site/r.php?ip=";
+    const url = "https://hse.gubanov.site/?ip=";
     let response = await fetch(url + ip);
     let resp = await response.json();
     return {
